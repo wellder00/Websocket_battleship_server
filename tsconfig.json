@@ -13,7 +13,7 @@
     "moduleResolution": "node"
   },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
-  "include": ["src"],
+  "include": ["index.ts"],
 
   "skipLibCheck": true,
   "ts-node": {

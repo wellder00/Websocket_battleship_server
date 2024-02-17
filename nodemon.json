@@ -1,5 +1,5 @@
 {
-  "exec": "node --no-warnings --loader ts-node/esm ./src/https_server/index.ts",
+  "exec": "node --no-warnings --loader ts-node/esm ./src/index.ts",
   "events": {
     "start": "cls"
   },
