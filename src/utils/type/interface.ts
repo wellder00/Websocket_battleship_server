@@ -15,17 +15,12 @@ export interface dataPlayer {
 
 export interface Room {
   roomId: string;
-  roomUsers: Player[];
+  roomUsers: roomUsers[];
   gameState: 0 | 1;
   players: Player[];
 }
 
-export interface roomData {
-  rooms: {
-    roomId: string;
-    roomUsers: {
-      name: string;
-      index: number;
-    }[];
-  }[];
+export interface roomUsers {
+  name: string;
+  index: number;
 }

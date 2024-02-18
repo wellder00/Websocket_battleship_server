@@ -1,8 +1,7 @@
 import { randomUUID } from "crypto";
 import { Player, Room } from "../../utils/type/interface";
 import { rooms } from "../../db/rooms";
-import { createJsonMessage } from "src/utils/utils";
-import { users } from "../../db/player";
+import { showRoomsAnotherUsers } from "./showRoomsAnotherUsers";
 
 export function createRoom(creator: Player): Room {
   const roomId = randomUUID();
@@ -15,10 +14,4 @@ export function createRoom(creator: Player): Room {
   rooms.push(newRoom);
   showRoomsAnotherUsers();
   return newRoom;
-}
-
-export function showRoomsAnotherUsers() {
-  users.forEach((player) => {
-    player.ws.send(createJsonMessage("update_room", rooms));
-  });
 }

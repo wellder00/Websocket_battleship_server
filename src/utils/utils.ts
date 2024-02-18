@@ -1,4 +1,3 @@
-import { dataPlayer, roomData } from "./type/interface";
 
 export const createJsonMessage = (type: string, data: object) => {
   return JSON.stringify({
@@ -8,7 +7,7 @@ export const createJsonMessage = (type: string, data: object) => {
   });
 };
 
-export function parseJsonSafely(data: string): { name: string; password: string } | null {
+export function parseJsonSafely(data: string) {
   try {
     return JSON.parse(data);
   } catch (error) {
