@@ -1,6 +1,6 @@
-import { dataPlayer } from "./type/interface";
+import { dataPlayer, roomData } from "./type/interface";
 
-export const createJsonMessage = (type: string, data: dataPlayer) => {
+export const createJsonMessage = (type: string, data: object) => {
   return JSON.stringify({
     type,
     data: JSON.stringify(data),
@@ -12,7 +12,6 @@ export function parseJsonSafely(data: string): { name: string; password: string 
   try {
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error parsing JSON:", error);
     return null;
   }
 }
