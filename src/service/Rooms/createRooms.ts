@@ -8,7 +8,7 @@ export function createRoom(creator: Player): Room {
   const newRoom: Room = {
     roomId: roomId,
     roomUsers: [],
-    gameState: 0,
+    gameState: false,
     players: [creator],
   };
   rooms.push(newRoom);

@@ -4,7 +4,7 @@ import { createJsonMessage, parseJsonSafely } from "../utils/utils";
 import { createPlayer } from "../service/Player/createPlayer";
 import { createRoom } from "../service/Rooms/createRooms";
 import { rooms } from "../db/rooms";
-import { Player, dataPlayer } from "../utils/type/interface";
+import { Player } from "../utils/type/interface";
 import { addUserToRoom } from "../service/Rooms/addUserToRoom";
 
 const webSocketServer = new WebSocketServer({
@@ -13,7 +13,7 @@ const webSocketServer = new WebSocketServer({
 });
 
 webSocketServer.on("connection", (ws: WebSocket) => {
-  let currentUser: dataPlayer | undefined;
+  let currentUser: Player | undefined;
   ws.onmessage = (event: MessageEvent) => {
     try {
       const msg = JSON.parse(event.data);
@@ -35,6 +35,7 @@ webSocketServer.on("connection", (ws: WebSocket) => {
           }
           break;
         case "add_user_to_room":
+          console.log(msg);
           let userName = currentUser.name;
           const indexRoom = userParseData.indexRoom;
 
