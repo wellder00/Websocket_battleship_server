@@ -6,6 +6,7 @@ import { createRoom } from "../service/Rooms/createRooms";
 import { rooms } from "../db/rooms";
 import { Player } from "../utils/type/interface";
 import { addUserToRoom } from "../service/Rooms/addUserToRoom";
+import { addShips } from "../service/Game/addShips";
 
 const webSocketServer = new WebSocketServer({
   port: 3000,
@@ -14,6 +15,7 @@ const webSocketServer = new WebSocketServer({
 
 webSocketServer.on("connection", (ws: WebSocket) => {
   let currentUser: Player | undefined;
+  let userName: string;
   ws.onmessage = (event: MessageEvent) => {
     try {
       const msg = JSON.parse(event.data);
@@ -23,27 +25,22 @@ webSocketServer.on("connection", (ws: WebSocket) => {
       switch (type) {
         case "reg":
           currentUser = createPlayer(userParseData.name, userParseData.password, ws);
-
+          userName = currentUser?.name;
           ws.send(createJsonMessage("reg", currentUser));
           // ws.send(createJsonMessage("update_winners", rooms));
           ws.send(createJsonMessage("update_room", rooms));
           break;
         case "create_room":
-          const creator = Array.from(users.values()).find((player) => player.ws === ws);
-          if (creator) {
-            createRoom(creator);
-          }
+          createRoom();
           break;
         case "add_user_to_room":
-          console.log(msg);
-          let userName = currentUser.name;
-          const indexRoom = userParseData.indexRoom;
-
+          const { indexRoom } = userParseData;
           addUserToRoom(indexRoom, userName);
 
           break;
         case "add_ships":
-          console.log(msg);
+          const { ships } = userParseData;
+          addShips(userName, ships);
           break;
         case "attack":
           console.log(msg);

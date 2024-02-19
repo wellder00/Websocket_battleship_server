@@ -3,13 +3,12 @@ import { Player, Room } from "../../utils/type/interface";
 import { rooms } from "../../db/rooms";
 import { showRoomsAnotherUsers } from "./showRoomsAnotherUsers";
 
-export function createRoom(creator: Player): Room {
+export function createRoom(): Room {
   const roomId = randomUUID();
   const newRoom: Room = {
     roomId: roomId,
     roomUsers: [],
     gameState: false,
-    players: [creator],
   };
   rooms.push(newRoom);
   showRoomsAnotherUsers();

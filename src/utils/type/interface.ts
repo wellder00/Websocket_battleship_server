@@ -1,4 +1,4 @@
-export interface Player {  
+export interface Player {
   name?: string;
   index?: number;
   error?: boolean;
@@ -7,13 +7,24 @@ export interface Player {
   id?: 0;
   ws?: WebSocket;
   winner?: number;
+  ready?: boolean;
+  ships?: IShip[];
+}
+
+export interface IShip {
+  position: {
+    x: number;
+    y: number;
+  };
+  direction: boolean;
+  length: number;
+  type: "small" | "medium" | "large" | "huge";
 }
 
 export interface Room {
   roomId: string;
   roomUsers: RoomUsers[];
   gameState: boolean;
-  players: Player[];
 }
 
 export interface RoomUsers {
@@ -21,9 +32,8 @@ export interface RoomUsers {
   index: number;
 }
 
-export interface Game {
-  roomId: string;  
-  gameState: boolean;
-  players: Player[];
-  board: string[][];
+type GameWithoutGameState = Omit<Room, "gameState">;
+
+export interface Games extends GameWithoutGameState {
+  userReady?: number;
 }
