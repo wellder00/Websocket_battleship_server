@@ -30,10 +30,18 @@ export interface Room {
 export interface RoomUsers {
   name: string;
   index: number;
+  turnIndex?: number;
 }
 
 type GameWithoutGameState = Omit<Room, "gameState">;
 
 export interface Games extends GameWithoutGameState {
   userReady?: number;
+}
+
+export interface Attack {
+  gameId: string,
+  x: number,
+  y: number,
+  indexPlayer: string,
 }

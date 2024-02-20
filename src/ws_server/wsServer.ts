@@ -7,6 +7,9 @@ import { rooms } from "../db/rooms";
 import { Player } from "../utils/type/interface";
 import { addUserToRoom } from "../service/Rooms/addUserToRoom";
 import { addShips } from "../service/Game/addShips";
+import { attack } from "../service/Game/attack";
+import { games } from "../db/game";
+import { findGame } from "../service/Game/findGame";
 
 const webSocketServer = new WebSocketServer({
   port: 3000,
@@ -36,14 +39,16 @@ webSocketServer.on("connection", (ws: WebSocket) => {
         case "add_user_to_room":
           const { indexRoom } = userParseData;
           addUserToRoom(indexRoom, userName);
-
           break;
         case "add_ships":
           const { ships } = userParseData;
           addShips(userName, ships);
           break;
         case "attack":
-          console.log(msg);
+          const { gameId, indexPlayer } = userParseData;
+          findGame(gameId, indexPlayer)
+            ? attack(currentUser, userParseData)
+            : console.log("Not your turn");
           break;
         case "randomAttack":
           console.log(msg);
