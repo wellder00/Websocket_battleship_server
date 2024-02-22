@@ -1,15 +1,26 @@
 import { randomUUID } from "crypto";
 import { Player, Room } from "../../utils/type/interface";
-import { rooms } from "../../db/rooms";
+import { removeRoom, rooms } from "../../db/rooms";
 import { showRoomsAnotherUsers } from "./showRoomsAnotherUsers";
 
-export function createRoom(): Room {
+export function createRoom(currentUser: Player): Room {
   const roomId = randomUUID();
   const newRoom: Room = {
     roomId: roomId,
     roomUsers: [],
     gameState: false,
   };
+  newRoom.roomUsers.push({
+    name: currentUser.name,
+    index: currentUser.index,
+  });
+
+  rooms.forEach((room) => {
+    if (room.roomUsers.some((user) => user.name === currentUser.name)) {
+      room.roomUsers = room.roomUsers.filter((user) => user.name !== currentUser.name);
+    }
+  });
+
   rooms.push(newRoom);
   showRoomsAnotherUsers();
   return newRoom;

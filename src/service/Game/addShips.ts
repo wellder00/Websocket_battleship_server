@@ -1,10 +1,11 @@
 import { users } from "../../db/player";
 import { createJsonMessage } from "../../utils/utils";
-import { IShip } from "../../utils/type/interface";
+import { Ship } from "../../utils/type/interface";
 import { games } from "../../db/game";
 import { turnPlayer } from "./turnPlayer";
+import { initializeBattlefield } from "./initializeBattlefield";
 
-export const addShips = (userName: string, ships: IShip[]) => {
+export const addShips = (userName: string, ships: Ship[]) => {
   const player = users.get(userName);
   if (!player) {
     console.log("Player not found");
@@ -20,7 +21,6 @@ export const addShips = (userName: string, ships: IShip[]) => {
 
   if (!game) {
     console.log("Game not found for the player");
-    console.log(game);
     return;
   }
 
@@ -34,13 +34,26 @@ export const addShips = (userName: string, ships: IShip[]) => {
     console.log("All players are ready. Game can start.");
 
     const firstPlayerIndex = game.roomUsers[0].index;
-    game.roomUsers.forEach((roomUser) => {
+    game.roomUsers.forEach((roomUser, index) => {
       const userPlayer = users.get(roomUser.name);
       if (userPlayer && userPlayer.ws) {
-        console.log(firstPlayerIndex);
+        const playerField = initializeBattlefield(userPlayer.ships);
+
+        if (!roomUser.usersFields) {
+          roomUser.usersFields = {
+            firstUserField: index === 0 ? playerField : [],
+            secondUserField: index === 1 ? playerField : [],
+          };
+        } else {
+          if (index === 0) {
+            roomUser.usersFields.firstUserField = playerField;
+          } else if (index === 1) {
+            roomUser.usersFields.secondUserField = playerField;
+          }
+        }
         const startGameData = { ships: userPlayer.ships, currentPlayerIndex: userPlayer.index };
         userPlayer.ws.send(createJsonMessage("start_game", startGameData));
-        turnPlayer(userPlayer, firstPlayerIndex, game.roomId);
+        turnPlayer( firstPlayerIndex, game.roomId);
       }
     });
   }

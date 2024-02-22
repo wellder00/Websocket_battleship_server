@@ -1,9 +1,8 @@
 import { users } from "../../db/player";
 import { addTurnIndex, games } from "../../db/game";
-import { Player } from "../../utils/type/interface";
 import { createJsonMessage } from "../../utils/utils";
 
-export const turnPlayer = (player: Player, currentPlayerIndex: number, gameId: string) => {
+export const turnPlayer = ( currentPlayerIndex: number, gameId: string) => {
   const game = games.find((game) => game.roomId === gameId);
   if (game) {
     game.roomUsers.forEach((roomUser) => {

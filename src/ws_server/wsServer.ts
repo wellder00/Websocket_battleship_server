@@ -18,7 +18,7 @@ const webSocketServer = new WebSocketServer({
 
 webSocketServer.on("connection", (ws: WebSocket) => {
   let currentUser: Player | undefined;
-  let userName: string;
+  
   ws.onmessage = (event: MessageEvent) => {
     try {
       const msg = JSON.parse(event.data);
@@ -28,21 +28,21 @@ webSocketServer.on("connection", (ws: WebSocket) => {
       switch (type) {
         case "reg":
           currentUser = createPlayer(userParseData.name, userParseData.password, ws);
-          userName = currentUser?.name;
+          
           ws.send(createJsonMessage("reg", currentUser));
           // ws.send(createJsonMessage("update_winners", rooms));
           ws.send(createJsonMessage("update_room", rooms));
           break;
         case "create_room":
-          createRoom();
+          createRoom(currentUser);
           break;
         case "add_user_to_room":
           const { indexRoom } = userParseData;
-          addUserToRoom(indexRoom, userName);
+          addUserToRoom(indexRoom, currentUser?.name);
           break;
         case "add_ships":
           const { ships } = userParseData;
-          addShips(userName, ships);
+          addShips(currentUser?.name, ships);
           break;
         case "attack":
           const { gameId, indexPlayer } = userParseData;
@@ -63,7 +63,7 @@ webSocketServer.on("connection", (ws: WebSocket) => {
   };
 
   ws.onclose = () => {
-    console.log("Good buyer!");
+    console.log("Good bye!");
   };
 });
 

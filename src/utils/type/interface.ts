@@ -8,10 +8,10 @@ export interface Player {
   ws?: WebSocket;
   winner?: number;
   ready?: boolean;
-  ships?: IShip[];
+  ships?: Ship[];
 }
 
-export interface IShip {
+export interface Ship {
   position: {
     x: number;
     y: number;
@@ -31,6 +31,12 @@ export interface RoomUsers {
   name: string;
   index: number;
   turnIndex?: number;
+  usersFields?: FieldUsers;
+}
+
+interface FieldUsers {
+  firstUserField: Field[][];
+  secondUserField: Field[][];
 }
 
 type GameWithoutGameState = Omit<Room, "gameState">;
@@ -40,8 +46,23 @@ export interface Games extends GameWithoutGameState {
 }
 
 export interface Attack {
-  gameId: string,
-  x: number,
-  y: number,
-  indexPlayer: string,
+  gameId: string;
+  x: number;
+  y: number;
+  indexPlayer: string;
 }
+
+export type Field = 
+  | {
+      empty: false;
+      leftSide: number;
+      pastTheCells: number[];
+      shipTheCells: Array<[number, number]>;
+      overCells: Array<[number, number]>;
+      isAttacked?: boolean;
+    }
+  | {
+      empty: true;
+      isAttacked: boolean;
+      overCells?: Array<[number, number]>;
+    };
