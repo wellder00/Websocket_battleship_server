@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Player, Room } from "../../utils/type/interface";
-import { removeRoom, rooms } from "../../db/rooms";
+import { rooms } from "../../db/rooms";
 import { showRoomsAnotherUsers } from "./showRoomsAnotherUsers";
 
 export function createRoom(currentUser: Player): Room {
@@ -13,6 +13,7 @@ export function createRoom(currentUser: Player): Room {
   newRoom.roomUsers.push({
     name: currentUser.name,
     index: currentUser.index,
+    shipsLeft: 10,
   });
 
   rooms.forEach((room) => {

@@ -24,7 +24,7 @@ export interface Ship {
 export interface Room {
   roomId: string;
   roomUsers: RoomUsers[];
-  gameState: boolean;
+  gameState?: boolean;
 }
 
 export interface RoomUsers {
@@ -32,6 +32,7 @@ export interface RoomUsers {
   index: number;
   turnIndex?: number;
   usersFields?: FieldUsers;
+  shipsLeft: number;
 }
 
 interface FieldUsers {
@@ -49,7 +50,7 @@ export interface Attack {
   gameId: string;
   x: number;
   y: number;
-  indexPlayer: string;
+  indexPlayer: string | number;
 }
 
 export type Field = 
@@ -65,4 +66,12 @@ export type Field =
       empty: true;
       isAttacked: boolean;
       overCells?: Array<[number, number]>;
+      leftSide?: number;
+      pastTheCells?: number[];
+      shipTheCells?: Array<[number, number]>;
     };
+
+    export interface Winners {
+      name: string;
+      wins: number;
+    }

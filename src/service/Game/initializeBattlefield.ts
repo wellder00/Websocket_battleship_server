@@ -1,7 +1,5 @@
 import { Field, Ship } from "../../utils/type/interface";
 
-
-
 function addSurroundingCells(x: number, y: number, descriptor: Field, fieldLength: number): void {
   const directions = [
     [-1, -1],

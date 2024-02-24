@@ -4,11 +4,12 @@ import { Ship } from "../../utils/type/interface";
 import { games } from "../../db/game";
 import { turnPlayer } from "./turnPlayer";
 import { initializeBattlefield } from "./initializeBattlefield";
+import { consoleColors } from "../../utils/constants/const";
 
 export const addShips = (userName: string, ships: Ship[]) => {
   const player = users.get(userName);
   if (!player) {
-    console.log("Player not found");
+    console.log(consoleColors.red, "Player not found");
     return;
   }
 
@@ -20,7 +21,7 @@ export const addShips = (userName: string, ships: Ship[]) => {
   );
 
   if (!game) {
-    console.log("Game not found for the player");
+    console.log(consoleColors.red, "Game not found for the player");
     return;
   }
 
@@ -31,7 +32,7 @@ export const addShips = (userName: string, ships: Ship[]) => {
 
   if (allPlayersReady) {
     game.userReady = game.roomUsers.length;
-    console.log("All players are ready. Game can start.");
+    console.log(consoleColors.green, "All players are ready. Game can start.");
 
     const firstPlayerIndex = game.roomUsers[0].index;
     game.roomUsers.forEach((roomUser, index) => {
@@ -53,7 +54,7 @@ export const addShips = (userName: string, ships: Ship[]) => {
         }
         const startGameData = { ships: userPlayer.ships, currentPlayerIndex: userPlayer.index };
         userPlayer.ws.send(createJsonMessage("start_game", startGameData));
-        turnPlayer( firstPlayerIndex, game.roomId);
+        turnPlayer(firstPlayerIndex, game.roomId);
       }
     });
   }

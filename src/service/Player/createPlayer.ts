@@ -4,6 +4,7 @@ export const createPlayer = (name: string, password: string, ws: WebSocket) => {
   if (users.has(name)) {
     const user = users.get(name);
     if (user.password === password) {
+      users.set(name, { ...user, ws });
       return { name, index: user.index, error: false };
     } else {
       return { error: true, errorText: "Error password" };
