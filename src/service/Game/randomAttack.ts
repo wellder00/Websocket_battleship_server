@@ -37,7 +37,12 @@ export const randomAttack = (player: Player, gameId: string) => {
   for (let y = 0; y < 10; y++) {
     for (let x = 0; x < 10; x++) {
       const cell = opponentField[y][x];
-      if (!cell.isAttacked) {
+      if (!cell.empty && cell.leftSide > 0 && !cell.isAttacked) {
+        attack(player, { gameId: gameId, x: x, y: y, indexPlayer: "" + player.index });
+        return;
+      }
+
+      if (cell.empty && !cell.isAttacked) {
         attack(player, { gameId: gameId, x: x, y: y, indexPlayer: "" + player.index });
         return;
       }

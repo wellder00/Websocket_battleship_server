@@ -13,7 +13,7 @@ import { Player } from "../utils/type/interface";
 import { createJsonMessage, parseJsonSafely } from "../utils/utils";
 import { randomAttack } from "../service/Game/randomAttack";
 import { showWinners } from "../service/Game/showWinners";
-import { announceWinner } from "../service/Game/announceWinner";
+import { announceWinner } from "../service/Game/attack";
 
 const webSocketServer = new WebSocketServer({
   port: 3000,
