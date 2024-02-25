@@ -1,6 +1,6 @@
 import { users } from "../../db/player";
 
-export const createPlayer = (name: string, password: string, ws: WebSocket) => {
+export const createPlayer = (name: string, password: string, ws: WebSocket, bot?: boolean) => {
   if (users.has(name)) {
     const user = users.get(name);
     if (user.password === password) {
@@ -19,6 +19,7 @@ export const createPlayer = (name: string, password: string, ws: WebSocket) => {
       errorText: "",
       id: 0,
       ws,
+      isBot: bot
     });
     return { name, index, error: false, errorText: "" };
   }

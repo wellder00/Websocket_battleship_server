@@ -80,7 +80,7 @@ webSocketServer.on("connection", (ws: WebSocket) => {
           break;
         case "single_play":
           console.log(msg);
-          podBot = createPlayer(generateRandomName(), generateRandomName(), ws);
+          podBot = createPlayer(generateRandomName(), generateRandomName(), ws, true);
           const botRoom = createRoom(podBot);
           addUserToRoom(botRoom.roomId, currentUser?.name);
           addShips(podBot.name, generateRandomShips());
@@ -92,25 +92,34 @@ webSocketServer.on("connection", (ws: WebSocket) => {
   };
 
   ws.onclose = () => {
-    rooms.forEach((room) => {
-      if (room.roomUsers.some((user) => user.name === currentUser.name)) {
-        room.roomUsers = room.roomUsers.filter((user) => user.name !== currentUser.name);
-        console.log(consoleColors.blue, "User removed from room.");
+    try {
+      if (!currentUser || typeof currentUser.name !== "string") {
+        console.log(consoleColors.red, "WebSocket closed, but no current user or name is invalid.");
+        return;
       }
-    });
 
-    games.forEach((game) => {
-      if (game.roomUsers.some((user) => user.name === currentUser.name)) {
-        game.roomUsers = game.roomUsers.filter((user) => user.name !== currentUser.name);
-        console.log(consoleColors.red, "User removed from game.");
-
-        if (game.roomUsers.length === 1) {
-          const remainingPlayerIndex = game.roomUsers[0].index;
-          announceWinner(game.roomId, remainingPlayerIndex);
+      rooms.forEach((room) => {
+        if (room.roomUsers.some((user) => user?.name === currentUser?.name)) {
+          room.roomUsers = room.roomUsers.filter((user) => user.name !== currentUser.name);
+          console.log(consoleColors.blue, "User removed from room.");
         }
-      }
-    });
-    console.log(consoleColors.blue, "Good bye!");
+      });
+
+      games.forEach((game) => {
+        if (game.roomUsers.some((user) => user?.name === currentUser?.name)) {
+          game.roomUsers = game.roomUsers.filter((user) => user.name !== currentUser.name);
+          console.log(consoleColors.red, "User removed from game.");
+
+          if (game.roomUsers.length === 1) {
+            const remainingPlayerIndex = game.roomUsers[0].index;
+            announceWinner(game.roomId, remainingPlayerIndex);
+          }
+        }
+      });
+      console.log(consoleColors.blue, "Good bye!");
+    } catch (error) {
+      console.log("Something in the way");
+    }
   };
 });
 

@@ -10,6 +10,7 @@ import { rooms } from "../../db/rooms";
 import { createJsonMessage } from "../../utils/utils";
 import { users } from "../../db/player";
 import { removeGame } from "../../db/game";
+import { randomAttack } from "./randomAttack";
 
 export const attack = (user: Player, dataAttack: Attack) => {
   const { x, y, gameId, indexPlayer } = dataAttack;
@@ -68,6 +69,11 @@ export const attack = (user: Player, dataAttack: Attack) => {
         currentPlayer: currentPlayer.index,
         status: "shot",
       });
+      
+      if (user.isBot) {
+        randomAttack(user, gameId);
+        console.log('123')
+      }
       const nextPlayerIndex = game.roomUsers.find((ru) => ru.index !== +indexPlayer)?.index;
       if (nextPlayerIndex !== undefined) {
         turnPlayer(nextPlayerIndex, gameId);

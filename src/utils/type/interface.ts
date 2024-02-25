@@ -9,6 +9,7 @@ export interface Player {
   winner?: number;
   ready?: boolean;
   ships?: Ship[];
+  isBot?: boolean;
 }
 
 export interface Ship {
