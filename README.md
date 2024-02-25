@@ -34,7 +34,7 @@ Run the battleship server in production mode:
 npm run start
 ```
 
-## 🌐 Works with Rest API
+## 🌐 Works with Websocket battleship server
 
 In this project, the server-side part of the well-known game Battleship is implemented. To play the game, you need to start one of the aforementioned commands and wait for notification of successful start of two REST API servers on port 8181 and a WebSocket on port 3000. Then, open a browser and go to [http://localhost:8181/](http://localhost:8181/). Next, register and choose one of two modes: either play with a bot or multiplayer. If you choose to play with a bot, place your ships or use the "Automatically" button, and then start the game. If you choose the multiplayer mode, you need to create a room and wait for another player to join the room. After that, place your ships and start the game.
 
