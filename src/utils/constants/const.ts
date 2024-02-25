@@ -1,3 +1,5 @@
+import { Ship } from "../type/interface";
+
 export const errorMessages = {
   errorRouter: "Oops, error:",
 };

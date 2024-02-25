@@ -97,7 +97,6 @@ const processDestroyedShip = (cell: Field, gameId: string, currentPlayerIndex: n
   });
 
   cell.shipTheCells.forEach((shipCell) => {
-    console.log({ x: shipCell[0], y: shipCell[1] });
     showPlayersAttack(gameId, "attack", {
       position: { x: shipCell[0], y: shipCell[1] },
       currentPlayer: currentPlayerIndex,
@@ -131,15 +130,18 @@ export const announceWinner = (gameId: string, winnerIndex: number) => {
       player.ws.send(createJsonMessage("update_winners", showWinners()));
     }
   });
-  games.forEach((game) => {
-    game.roomId === gameId;
-    rooms.push(game);
-  });
   removeGame(gameId);
-  
-  // games.forEach((game) => {
-  //   if (game.roomUsers.some((user) => user.index === winnerIndex)) {
-  //     game.roomUsers = game.roomUsers.filter((user) => user.index !== winnerIndex);
-  //   }
-  // });
+
+  games.forEach((game) => {
+    if (game.roomUsers.some((user) => user.index === winnerIndex)) {
+      console.log(winnerIndex);
+      game.roomUsers = game.roomUsers.filter((user) => user.index !== winnerIndex);
+    }
+  });
+  rooms.forEach((room) => {
+    if (room.roomUsers.some((user) => user.index === winnerIndex)) {
+      console.log(winnerIndex);
+      room.roomUsers = room.roomUsers.filter((user) => user.index !== winnerIndex);
+    }
+  });
 };
