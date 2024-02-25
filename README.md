@@ -31,7 +31,7 @@ npm run start:dev
 Run the battleship server in production mode:
 
 ```bash
-npm run start:prod
+npm run start
 ```
 
 If you start in multi mode, the response to the request can be seen in the console. The data from the database should be consistent across all workers, and the workers should be load-balanced in a round-robin fashion.
